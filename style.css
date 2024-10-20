@@ -1,17 +1,73 @@
 body {
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    text-align: center;
     height: 100vh;
-    margin: 0;
+    margin: unset;
+}   
+
+header {
+    margin: unset;
+    padding: 3vh;
 }
 
-#game-container {
+main {
+    display: inline-flex;
     text-align: center;
+    gap: 10vw;
+    margin-top: 10vh;
+}
+
+#hangman-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+}
+
+#restart-game {
+    display: none;
+    font-size: 24px;
+    margin-top: 20px;
+}
+
+
+#game-container {
+    font-size: 32px;
+}
+
+#word-container {
+    font-size: 64px;
+}
+
+#letters-container {
+    font-size: 24px;
+    display: flex;
+    flex-direction: column;
+    /* gap: 2vh; */
+}
+
+#letters-container button {
+    display: inline-flex; /* Umożliwia centrowanie tekstu w przycisku */
+    justify-content: center; /* Wyrównuje tekst w poziomie */
+    align-items: center; /* Wyrównuje tekst w pionie */
+    margin: 1vw; /* Dodaje przestrzeń wokół przycisków */
+    padding: 0.6vw; /* Dodaje przestrzeń wewnętrzną do przycisków */
+    border-radius: 0.5vw; /* Zaokrąglone rogi */
+    width: 3vw; /* Ustawia stałą szerokość */
+    height: 3vw; /* Ustawia stałą wysokość */
+    font-size: 2vw; /* Ustawia rozmiar czcionki */
+}
+
+#letters-container button:hover {
+    background-color: rgb(226, 226, 226);
+    box-shadow: 0px 0px 7px grey;
 }
 
 #hangman-svg {
     border: 1px solid #000;
     margin-top: 20px;
+}
+
+#head {
+    stroke: black;
+    fill: white;
+    stroke-width: 2px;
 }

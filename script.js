@@ -1,46 +1,105 @@
 $(document).ready(function() {
-    const words = ["javascript", "jquery", "html", "css", "svg"];
-    let selectedWord = words[Math.floor(Math.random() * words.length)];
+    const categories = [
+        {
+            category: "Superbohaterowie",
+            words: ["superman", "batman", "ironman", "spiderman", "wolverine"]
+        },
+        {
+            category: "Planety",
+            words: ["merkury", "wenus", "ziemia", "mars", "jowisz"]
+        },
+        {
+            category: "Instrumenty",
+            words: ["fortepian", "skrzypce", "saksofon", "klawesyn", "akordeon"]
+        },
+        {
+            category: "Mitologia",
+            words: ["posejdon", "herkules", "atena", "afrodyta", "dionizos"]
+        },
+        {
+            category: "Literatura",
+            words: ["hamlet", "makbet", "odyseja", "don kichot", "frankenstein"]
+        }
+    ];
+    
+    let selectedCategory = categories[Math.floor(Math.random() * categories.length)];
+    $('.hint').text(`Kategoria: ${selectedCategory.category}`);
+    
+    let selectedWord = selectedCategory.words[Math.floor(Math.random() * selectedCategory.words.length)];
+    // let selectedWord = "don kichot";
+    alert(selectedWord);
     let guessedLetters = [];
     let mistakes = 0;
     const maxMistakes = 6;
+    const hangmanParts = ['#head', '#body', '#left-arm', '#right-arm', '#left-leg', '#right-leg'];
 
-    function updateWordDisplay() {
-        let displayWord = selectedWord.split('').map(letter => guessedLetters.includes(letter) ? letter : "_").join(' ');
-        $('#word-container').text(displayWord);
+    function createLetterButtons() {
+        const keyboardLayout = [
+            "q w e r t y u i o p",
+            "a s d f g h j k l",
+            "z x c v b n m"
+        ];
+    
+        keyboardLayout.forEach(row => {
+            const keyboardRow = $('<div></div>'); // Tworzymy nowy div dla każdego rzędu
+            row.split(' ').forEach(letter => {
+                keyboardRow.append(`<button>${letter.toUpperCase()}</button>`); // Dodajemy przyciski do rzędu
+            });
+            $('#letters-container').append(keyboardRow); // Dodajemy rząd do kontenera
+        });
     }
-
+    
+    
+    function updateWordDisplay() {
+        let displayWord = selectedWord.split('').map(letter => {
+            if (letter === ' ') {
+                return ' '; // Zwracamy spację, aby była widoczna
+            }
+            return guessedLetters.includes(letter) ? letter : "_"; // Zwracamy literę lub "_"
+        }).join(''); // Dołączamy litery i spacje
+        $('#word-container').text(displayWord.toUpperCase());
+    }    
+    
     function updateHangman() {
-        // Update SVG based on mistakes
-        $('#hangman-svg').html(`
-            ${mistakes > 0 ? '<circle cx="100" cy="50" r="20" />' : ''}
-            ${mistakes > 1 ? '<line x1="100" y1="70" x2="100" y2="130" />' : ''}
-            ${mistakes > 2 ? '<line x1="100" y1="90" x2="70" y2="110" />' : ''}
-            ${mistakes > 3 ? '<line x1="100" y1="90" x2="130" y2="110" />' : ''}
-            ${mistakes > 4 ? '<line x1="100" y1="130" x2="70" y2="160" />' : ''}
-            ${mistakes > 5 ? '<line x1="100" y1="130" x2="130" y2="160" />' : ''}
-        `);
+        if (mistakes > 0 && mistakes <= hangmanParts.length) {
+            $(hangmanParts[mistakes - 1]).css('display', 'block');
+        }
+    }
+    
+    function resetHangman() {
+        hangmanParts.forEach(part => {
+            $(part).css('display', 'none');
+        });
     }
 
     function checkGameStatus() {
         if (mistakes >= maxMistakes) {
             $('#message').text(`Przegrałeś! Słowo to: ${selectedWord}`);
             $('#letters-container').off('click', 'button');
+            $('#restart-game').show();
         } else if (!$('#word-container').text().includes('_')) {
             $('#message').text('Wygrałeś!');
             $('#letters-container').off('click', 'button');
+            $('#restart-game').show();
         }
     }
-
-    function createLetterButtons() {
-        const alphabet = "abcdefghijklmnopqrstuvwxyz".split('');
-        alphabet.forEach(letter => {
-            $('#letters-container').append(`<button>${letter}</button>`);
-        });
-    }
+    
+    $('#restart-game').on('click', function() {
+        selectedCategory = categories[Math.floor(Math.random() * categories.length)];
+        selectedWord = selectedCategory.words[Math.floor(Math.random() * selectedCategory.words.length)];
+        guessedLetters = [];
+        mistakes = 0;
+        $('#message').empty();
+        $('#letters-container').empty();
+        resetHangman();
+        $(this).hide();
+        updateWordDisplay();
+        createLetterButtons();
+        $('.hint').text(`Kategoria: ${selectedCategory.category}`);
+    });
 
     $('#letters-container').on('click', 'button', function() {
-        let letter = $(this).text();
+        let letter = $(this).text().toLowerCase();
         $(this).prop('disabled', true);
         if (selectedWord.includes(letter)) {
             guessedLetters.push(letter);
@@ -52,6 +111,7 @@ $(document).ready(function() {
         checkGameStatus();
     });
 
+    resetHangman();
     updateWordDisplay();
     createLetterButtons();
 });
