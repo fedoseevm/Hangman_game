@@ -63,7 +63,20 @@ main {
 
 #hangman-svg {
     border: 1px solid #000;
-    margin-top: 20px;
+    /* margin-top: 20px; */
+    display: block;
+    margin: auto;
+    position: relative;
+}
+
+#head, #body, #left-arm, #right-arm, #left-leg, #right-leg {
+    transform-origin: center;
+    transform: translate(100px, 50px);
+}
+
+#hangman-svg circle, line {
+    stroke: black;
+    stroke-width: 2;
 }
 
 #head {

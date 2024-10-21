@@ -31,7 +31,20 @@ $(document).ready(function() {
     let guessedLetters = [];
     let mistakes = 0;
     const maxMistakes = 6;
-    const hangmanParts = ['#head', '#body', '#left-arm', '#right-arm', '#left-leg', '#right-leg'];
+    const hangmanParts = [
+        '#head', 
+        '#body', 
+        '#left-arm', 
+        '#right-arm', 
+        '#left-leg', 
+        '#right-leg'
+    ];    
+    
+    function updateHangman() {
+        if (mistakes > 0 && mistakes <= hangmanParts.length) {
+            $(hangmanParts[mistakes - 1]).css('display', 'block');
+        }
+    }
 
     function createLetterButtons() {
         const keyboardLayout = [
@@ -58,12 +71,6 @@ $(document).ready(function() {
             return guessedLetters.includes(letter) ? letter : "_"; // Zwracamy literę lub "_"
         }).join(''); // Dołączamy litery i spacje
         $('#word-container').text(displayWord.toUpperCase());
-    }    
-    
-    function updateHangman() {
-        if (mistakes > 0 && mistakes <= hangmanParts.length) {
-            $(hangmanParts[mistakes - 1]).css('display', 'block');
-        }
     }
     
     function resetHangman() {
