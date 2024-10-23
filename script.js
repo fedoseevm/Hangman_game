@@ -27,7 +27,7 @@ $(document).ready(function() {
     
     let selectedWord = selectedCategory.words[Math.floor(Math.random() * selectedCategory.words.length)];
     // let selectedWord = "don kichot";
-    alert(selectedWord);
+    // alert(selectedWord);
     let guessedLetters = [];
     let mistakes = 0;
     const maxMistakes = 6;
@@ -64,13 +64,17 @@ $(document).ready(function() {
     
     
     function updateWordDisplay() {
-        let displayWord = selectedWord.split('').map(letter => {
-            if (letter === ' ') {
-                return ' '; // Zwracamy spację, aby była widoczna
-            }
-            return guessedLetters.includes(letter) ? letter : "_"; // Zwracamy literę lub "_"
-        }).join(''); // Dołączamy litery i spacje
-        $('#word-container').text(displayWord.toUpperCase());
+        let displayWord = selectedWord.split(' ').map(word => {
+            // Przetwarzanie każdego słowa
+            let displayLetters = word.split('').map(letter => {
+                return `<span class="letter" style="width: 1ch; text-align: center;">${guessedLetters.includes(letter) ? letter : "_"}</span>`;
+            }).join(''); // Nie dołączamy spacji między literami
+    
+            // Każde słowo zwraca się otoczone przez span
+            return `<span class="word" style="display: inline-flex; gap: 1.5vw;">${displayLetters}</span>`;
+        }).join(' '); // Odstęp między słowami
+    
+        $('#word-container').html(displayWord.toUpperCase()); // Używamy .html(), aby dodać tagi
     }
     
     function resetHangman() {
@@ -103,6 +107,18 @@ $(document).ready(function() {
         updateWordDisplay();
         createLetterButtons();
         $('.hint').text(`Kategoria: ${selectedCategory.category}`);
+        $('#letters-container').on('click', 'button', function() {
+            let letter = $(this).text().toLowerCase();
+            $(this).prop('disabled', true);
+            if (selectedWord.includes(letter)) {
+                guessedLetters.push(letter);
+                updateWordDisplay();
+            } else {
+                mistakes++;
+                updateHangman();
+            }
+            checkGameStatus();
+        });
     });
 
     $('#letters-container').on('click', 'button', function() {
