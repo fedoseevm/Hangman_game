@@ -6,22 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hangman</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="font.css">
+    <link rel="stylesheet" href="fonts.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
         rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 </head>
 
-<body class="roboto-regular">
+<body class="kalam-regular">
+    <div class="background"></div>
     <header>
         <h1>Hangman game - Wisielec</h1>
         <h3>Gra stworzona za pomocą jQuery framework</h3>
     </header>
     <main>
         <div id="hangman-container">
-            <svg id="hangman-svg" width="500" height="400">
+            <svg id="hangman-svg" width="400" height="303">
                 <!-- Podstawa -->
                 <line class="szubienica" x1="70" y1="300" x2="175" y2="300" />
                 <!-- Słup -->
@@ -38,17 +42,17 @@
                 <line id="left-leg" x1="250" y1="225" x2="205" y2="270" />
                 <line id="right-leg" x1="250" y1="225" x2="295" y2="270" />
             </svg>
-            <button id="restart-game">Nowa gra</button>
+            <button class="roboto-bold" id="restart-game">Nowa gra</button>
         </div>
         
         <div id="game-container">
-            <div class="hint">
+            <p class="hint">
                 <!-- Tu będzie wyświetlana kategoria  -->
-            </div>
+            </p>
             <div id="word-container">
-                <!-- Tu wyświetlają się zgadywane litery -->
+                <!-- Tu wyświetlają się odgadywane litery -->
             </div>
-            <div id="letters-container">
+            <div id="letters-container" class="roboto-regular">
                 <!-- Lista liter -->
             </div>
             <div id="message">
